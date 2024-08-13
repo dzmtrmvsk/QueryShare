@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# QueryShare
 
-## Getting Started
+Welcome to **QueryShare**, a social network where everyone can share and search AI prompts. This project is built using **Next.js** and **Tailwind CSS**.
 
-First, run the development server:
+## Table of Contents
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- [Features](#features)
+- [Installation](#installation)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **User Authentication**: Sign up, log in, and manage your profile.
+- **Prompt Sharing**: Create and share AI prompts with the community.
+- **Prompt Searching**: Search for AI prompts by keywords or categories.
+- **Responsive Design**: Fully responsive design using Tailwind CSS.
+- **Real-time Updates**: See real-time updates of new prompts shared by users.
+- **Profile Management**: Manage your personal profile and view other users' profiles.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Installation
 
-## Learn More
+To get started with QueryShare, follow these steps:
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clone the repository**:
+    ```bash
+    git clone https://github.com/yourusername/queryshare.git
+    cd queryshare
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Install dependencies**:
+    ```bash
+    npm install
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+3. **Create an `.env.local` file** and add your environment variables:
+    ```
+    NEXT_PUBLIC_API_URL=your_api_url
+    ```
 
-## Deploy on Vercel
+4. **Run the development server**:
+    ```bash
+    npm run dev
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
