@@ -1,4 +1,5 @@
 import Feed from "@components/Feed"
+import Link from "next/link"
 
 const Home = () => {
     return (
@@ -13,6 +14,9 @@ const Home = () => {
             <p className="desc text-center">
             QueryShare is an open-source AI promting tool for modern world to discover, create and share creative promts
             </p>
+            <Link href={'/testtest'}>
+            TESTTEST
+            </Link>
             <br /><br /><br /><br /><br />
             <Feed />
         </section>
