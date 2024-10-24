@@ -84,13 +84,13 @@ const TestComponent = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [status, setStatus] = useState(null); // Для проверки успешного запроса
+    const [status, setStatus] = useState(null); 
 
     useEffect(() => {
         // GET запрос к jsonplaceholder
         fetch('https://jsonplaceholder.typicode.com/posts')
             .then(response => {
-                setStatus(response.status); // Проверка статуса ответа
+                setStatus(response.status); 
                 if (!response.ok) {
                     throw new Error('Ошибка при получении данных');
                 }
