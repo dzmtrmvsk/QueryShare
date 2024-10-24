@@ -1,96 +1,20 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 
-const Container = styled.div`
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-`;
-
-const Title = styled.h1`
-    font-size: 2em;
-    color: #333;
-    text-align: center;
-    margin-bottom: 20px;
-`;
-
-const List = styled.ul`
-    list-style-type: none;
-    padding: 0;
-`;
-
-const ListItem = styled.li`
-    background-color: #fff;
-    margin-bottom: 10px;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease-in-out;
-
-    &:hover {
-        transform: scale(1.02);
-    }
-`;
-
-const PostTitle = styled.h2`
-    font-size: 1.5em;
-    color: #444;
-    margin-bottom: 10px;
-`;
-
-const PostBody = styled.p`
-    font-size: 1em;
-    color: #666;
-    line-height: 1.6;
-`;
-
-const Button = styled.button`
-    padding: 10px 15px;
-    margin: 10px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-
-    &:hover {
-        background-color: #45a049;
-    }
-
-    &:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-    }
-`;
-
-const ErrorMessage = styled.p`
-    color: red;
-    text-align: center;
-`;
-
-const LoadingMessage = styled.p`
-    color: #333;
-    text-align: center;
-`;
-
-// Основной компонент
 const TestComponent = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [status, setStatus] = useState(null); 
+    const [status, setStatus] = useState(null);
+    const [postId, setPostId] = useState('');
+    const [singlePost, setSinglePost] = useState(null);
 
     useEffect(() => {
-        // GET запрос к jsonplaceholder
+        // GET запрос для получения всех постов
         fetch('https://jsonplaceholder.typicode.com/posts')
             .then(response => {
-                setStatus(response.status); 
+                setStatus(response.status);
                 if (!response.ok) {
                     throw new Error('Ошибка при получении данных');
                 }
@@ -105,6 +29,32 @@ const TestComponent = () => {
                 setLoading(false);
             });
     }, []);
+
+    // Функция для поиска поста по ID
+    const handleFetchPostById = () => {
+        if (postId === '') {
+            alert('Введите ID поста');
+            return;
+        }
+
+        setLoading(true);
+        fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Пост не найден');
+                }
+                return response.json();
+            })
+            .then(post => {
+                setData(null);
+                setSinglePost(post);
+                setLoading(false);
+            })
+            .catch(error => {
+                setError(error.message);
+                setLoading(false);
+            });
+    };
 
     // POST запрос
     const handlePost = () => {
@@ -160,32 +110,74 @@ const TestComponent = () => {
     };
 
     if (loading) {
-        return <LoadingMessage>Загрузка...</LoadingMessage>;
+        return <p className="text-center text-gray-500">Загрузка...</p>;
     }
 
     if (error) {
-        return <ErrorMessage>Ошибка: {error}</ErrorMessage>;
+        return <p className="text-center text-red-500">Ошибка: {error}</p>;
     }
 
     return (
-        <Container>
-            <Title>Список постов:</Title>
-            {status === 200 ? (
-                <List>
-                    {data.map(post => (
-                        <ListItem key={post.id}>
-                            <PostTitle>{post.title}</PostTitle>
-                            <PostBody>{post.body}</PostBody>
-                        </ListItem>
-                    ))}
-                </List>
-            ) : (
-                <ErrorMessage>Не удалось получить данные (Статус: {status})</ErrorMessage>
+        <div className="max-w-4xl mx-auto p-6 bg-gray-100 rounded-lg shadow-md">
+            <h1 className="text-3xl font-bold text-center mb-6">Список постов</h1>
+
+            <div className="flex flex-col md:flex-row gap-4 mb-4">
+                <input 
+                    type="text" 
+                    placeholder="Введите ID поста" 
+                    className="border p-2 rounded-md w-full md:w-auto flex-grow"
+                    value={postId}
+                    onChange={(e) => setPostId(e.target.value)}
+                />
+                <button 
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+                    onClick={handleFetchPostById}
+                >
+                    Найти пост по ID
+                </button>
+            </div>
+
+            {singlePost && (
+                <div className="bg-white p-4 rounded-lg shadow mb-6">
+                    <h2 className="text-xl font-semibold">{singlePost.title}</h2>
+                    <p className="text-gray-700">{singlePost.body}</p>
+                </div>
             )}
-            <Button onClick={handlePost}>Выполнить POST запрос</Button>
-            <Button onClick={handlePut}>Выполнить PUT запрос</Button>
-            <Button onClick={handleDelete}>Выполнить DELETE запрос</Button>
-        </Container>
+
+            {status === 200 ? (
+                <ul className="space-y-4">
+                    {data && data.map(post => (
+                        <li key={post.id} className="bg-white p-4 rounded-lg shadow">
+                            <h2 className="text-2xl font-semibold text-gray-800 mb-2">{post.title}</h2>
+                            <p className="text-gray-600">{post.body}</p>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p className="text-center text-red-500">Не удалось получить данные (Статус: {status})</p>
+            )}
+
+            <div className="flex justify-center gap-4 mt-6">
+                <button 
+                    className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
+                    onClick={handlePost}
+                >
+                    POST запрос
+                </button>
+                <button 
+                    className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition-colors"
+                    onClick={handlePut}
+                >
+                    PUT запрос
+                </button>
+                <button 
+                    className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors"
+                    onClick={handleDelete}
+                >
+                    DELETE запрос
+                </button>
+            </div>
+        </div>
     );
 };
 
