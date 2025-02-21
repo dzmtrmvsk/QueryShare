@@ -1,6 +1,6 @@
 # QueryShare
 
-Welcome to **QueryShare**, a social network where everyone can share and search AI prompts. This project is built using **Next.js** and **Tailwind CSS**.
+Welcome to **QueryShare**, a social network where everyone can share and search AI prompts. This project is built using **Next.js** and **Tailwind CSS** with  **MongoDB** for storing data.
 
 ## Table of Contents
 
